@@ -1,9 +1,12 @@
-import { WEATHER_TODAY_COUNTRY, LATITUDE, LONGITUDE, WEATHER_TODAY_DATE } from './constants';
+import { WEATHER_TODAY_COUNTRY, LATITUDE, LONGITUDE, WEATHER_TODAY_DATE, INPUT_SEARCH} from './constants';
 
 export let timerId;
 
 export function fillingGeoInfo(country, city, lat, lng, timezone, language){
-    WEATHER_TODAY_COUNTRY.textContent = `${city}, ${country}`; 
+    WEATHER_TODAY_COUNTRY.textContent = `${city}, ${country}`;
+    // if (city == ''){
+    //     WEATHER_TODAY_COUNTRY.textContent = `${INPUT_SEARCH.value}, ${country}`;
+    // }
     LATITUDE.textContent = `Широта: ${lat}`;
     LONGITUDE.textContent = `Долгота: ${lng}`;
     let moment = require('moment-timezone');

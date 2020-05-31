@@ -1,6 +1,6 @@
 import { getMap} from './map';
 import { setWeather} from './weather';
-import { LONGITUDE, LATITUDE } from './constants';
+import { INPUT_SEARCH } from './constants';
 import { fillingGeoInfo } from './filling';
 
 export function getCityNameByCoordinates(latitude, longitude, language) {
@@ -29,6 +29,14 @@ export async function setCoordinatesByCityName(cityName, language){
         let lat = cityNameInfo.results[0].annotations.DMS.lat;
         let country = cityNameInfo.results[0].components.country;
         let city = cityNameInfo.results[0].components.city;
+        if (city == undefined){
+            let type = cityNameInfo.results[0].components._type;
+            city = cityNameInfo.results[0].components[type];
+            if (type == "country" || city == undefined) {
+                city = INPUT_SEARCH.value;
+            }
+            console.log(type, cityNameInfo)
+        }
         let timezone = cityNameInfo.results[0].annotations.timezone.name;
 
         fillingGeoInfo(country, city, lat, lng,  timezone, language);

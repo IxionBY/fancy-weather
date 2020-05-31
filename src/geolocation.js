@@ -1,8 +1,6 @@
 import { setCityNameByCoordinates } from './geocodingApi';
-import { fillingGeoInfo } from './filling';
 import { getMap } from './map';
 import { language} from './index';
-import { setWeather } from './weather';
 
 export let options = {
     enableHighAccuracy: true,

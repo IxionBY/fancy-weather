@@ -1,5 +1,4 @@
 import { WEATHER_TODAY_PROP, CURRENT_TEMP, CURRENT_WEATHER_ICON, NEXT_DAY_TEMPS, NEXT_DAY_NAME, DAYS_RU, DAYS_EN, DAYS_BE, NEXT_DAY_ICONS } from './constants';
-import { language, units } from './index';
 import{ setImage } from './background';
 
 export function getWeatherNextDays(latitude, longitude, language) {
