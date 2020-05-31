@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FancyWeather IxionBY</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css" rel="stylesheet" />
+</head>
+<body>
+    <section class="app_wrapper">
+        <section class="control">
+            <section class="control__buttons-wrapper"> 
+                <div class="btn_base button-background">
+                    <img src="assets/img/icons8-refresh.svg" class="controls_block--btn_icon" alt="refresh">
+                </div>
+                <div class="button-languages">
+                    <select class="list-languages">
+                        <option style="background-color: gray;">en</option>
+                        <option style="background-color: gray;">ru</option>
+                        <option style="background-color: gray;">be</option>
+                    </select>
+                </div>
+                <div class="button-temp-view">
+                    <div class="btn_base button-temp-f">°F</div>
+                    <div class="btn_base button-temp-c active">°C</div>
+                </div>
+            </section>
+            <section class="control__search-wrapper">
+                <form class="control__search-form">
+                    <div class="control__search--search-area">
+                        <input class="input-search" type="search" placeholder="Search city">
+                        <div class="button-voice">
+                            <img class="button-voice-img" src="assets/img/voice.png" alt="voice">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn_base button-search">SEARCH</button>
+                </form>
+            </section>
+        </section>
+        <section class="weather">
+            <section class="weather__today">
+                <div class="text_base weather__today--city-country"></div>
+                <div class="text_base weather__today--date-time"></div>
+                <div class="weather__today--wrapper">
+                    <div class="text_base weather__today--temp"></div>
+                    <img src="" alt="" class="weather__today--sign">
+                    <div class="weather__today--wrapper_prop">
+                        <div class="text_base weather__today--prop"></div>
+                        <div class="text_base weather__today--prop"></div>
+                        <div class="text_base weather__today--prop"></div>
+                        <div class="text_base weather__today--prop"></div>
+                    </div>
+                </div>
+            </section>
+            <section class="weather__days">
+                <div class="day_block">
+                    <div class="text_base day_block--name"></div>
+                    <div class="text_base day_block--temp"></div>
+                    <img src="" alt="" class="day_block--sign">
+                </div>
+                <div class="day_block">
+                    <div class="text_base day_block--name"></div>
+                    <div class="text_base day_block--temp"></div>
+                    <img src="" alt="" class="day_block--sign">
+                </div>
+                <div class="day_block">
+                    <div class="text_base day_block--name"></div>
+                    <div class="text_base day_block--temp"></div>
+                    <img src="" alt="" class="day_block--sign">
+                </div>
+            </section>
+        </section>
+        <section class="map_block">
+            <div id="map" class="map"></div>
+            <div class="text_base map_block--text latitude"></div>
+            <div class="text_base map_block--text longitude"></div>
+        </section>
+    </section>
+    <script src="./dist/main.js"></script>
+</body>
+</html>
