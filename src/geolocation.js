@@ -1,6 +1,6 @@
 import { setCityNameByCoordinates } from './geocodingApi';
 import { getMap } from './map';
-import { language} from './index';
+import { language, unit } from './index';
 
 export let options = {
     enableHighAccuracy: true,
@@ -9,11 +9,9 @@ export let options = {
 };
 
 export async function success(pos) {
-    var crd = pos.coords;
-    setCityNameByCoordinates(crd.latitude, crd.longitude, language);
-    setTimeout(function(){
-        getMap(crd.latitude, crd.longitude);
-    }, 800);
+    let crd = pos.coords;
+    setCityNameByCoordinates(crd.latitude, crd.longitude, language, unit);
+    getMap(crd.latitude, crd.longitude);
 };
 
 export function error(err) {

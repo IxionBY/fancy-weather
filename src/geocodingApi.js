@@ -1,11 +1,10 @@
 import { getMap} from './map';
 import { setWeather} from './weather';
-import { INPUT_SEARCH } from './constants';
+import { INPUT_SEARCH, API_MESSAGE } from './constants';
 import { fillingGeoInfo } from './filling';
 
 export function getCityNameByCoordinates(latitude, longitude, language) {
     const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}%2C${longitude}&pretty=1&language=${language}&key=ab4a850827f44a8ba9984431d32f665f`;
-    console.log(longitude, latitude);
     return fetch(url)
         .then((res) => res.json());
 }
@@ -18,16 +17,15 @@ export function getCoordinatesByCityName(cityName, language) {
 
 export async function setCoordinatesByCityName(cityName, language){
     try {
+        INPUT_SEARCH.classList.remove('red');
         let cityNameInfo = await getCoordinatesByCityName(cityName, language);
-
-        setTimeout(function(){
-            getMap(cityNameInfo.results[0].geometry.lat, cityNameInfo.results[0].geometry.lng);
-        }, 800);
-        setWeather(cityNameInfo.results[0].geometry.lat, cityNameInfo.results[0].geometry.lng, language);
-
+        if(cityNameInfo.total_results == 0){
+            throw newError('Данных не найдено');
+        }
         let lng = cityNameInfo.results[0].annotations.DMS.lng;
         let lat = cityNameInfo.results[0].annotations.DMS.lat;
         let country = cityNameInfo.results[0].components.country;
+        let timezone = cityNameInfo.results[0].annotations.timezone.name;
         let city = cityNameInfo.results[0].components.city;
         if (city == undefined){
             let type = cityNameInfo.results[0].components._type;
@@ -35,30 +33,27 @@ export async function setCoordinatesByCityName(cityName, language){
             if (type == "country" || city == undefined) {
                 city = INPUT_SEARCH.value;
             }
-            console.log(type, cityNameInfo)
         }
-        let timezone = cityNameInfo.results[0].annotations.timezone.name;
-
+        getMap(cityNameInfo.results[0].geometry.lat, cityNameInfo.results[0].geometry.lng);
+        setWeather(cityNameInfo.results[0].geometry.lat, cityNameInfo.results[0].geometry.lng, timezone, language);
         fillingGeoInfo(country, city, lat, lng,  timezone, language);
-
     } catch(error) {
-        console.log(error);
+        INPUT_SEARCH.value ='';
+        INPUT_SEARCH.placeholder = API_MESSAGE[language];
+        INPUT_SEARCH.classList.add('red');
     }
 }
 
-export async function setCityNameByCoordinates(latitude, longitude, language){
+export async function setCityNameByCoordinates(latitude, longitude, language, unit){
     try {
         let locationByCoordinates = await getCityNameByCoordinates(latitude, longitude, language);
-        
         let country = locationByCoordinates.results[0].components.country;
         let city = locationByCoordinates.results[0].components.city;
         let lat = locationByCoordinates.results[0].annotations.DMS.lat;
         let lng = locationByCoordinates.results[0].annotations.DMS.lng;
         let timezone = locationByCoordinates.results[0].annotations.timezone.name;
         fillingGeoInfo(country, city, lat, lng,  timezone, language);
-
-        setWeather(latitude, longitude, language);
-
+        setWeather(latitude, longitude, timezone, language, unit);
     } catch(error) {
         console.log(error);
     }

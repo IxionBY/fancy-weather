@@ -1,49 +1,72 @@
-import { WEATHER_TODAY_PROP, CURRENT_TEMP, CURRENT_WEATHER_ICON, NEXT_DAY_TEMPS, NEXT_DAY_NAME, DAYS_RU, DAYS_EN, DAYS_BE, NEXT_DAY_ICONS } from './constants';
-import{ setImage } from './background';
+import { WEATHER_TODAY_PROP, CURRENT_TEMP, CURRENT_WEATHER_ICON, NEXT_DAY_TEMPS, NEXT_DAY_NAME, DAYS_RU, DAYS_EN, DAYS_BE, NEXT_DAY_ICONS, INPUT_SEARCH} from './constants';
+import { setImage } from './background';
+import { changeUnitTemp } from './temperatureConverter'
+import { toDetermineDayPeriod, toDetermineSeason } from './optionalFunctions'
+import { fillWeatherInfo } from './filling'
 
-export function getWeatherNextDays(latitude, longitude, language) {
+function getWeather(latitude, longitude, language) {
     const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&%20exclude=hourly&units=metric&lang=${language}&appid=c3ca0fd166457d509488212a4623be5e`;
     return fetch(url)
         .then((res) => res.json());
 }
 
-export let weatherDescription = '';
+export let cityName = '';
+export let currentSeason;
+export let timesOfDay;
 
-export async function setWeather(latitude, longitude, language){
+
+export async function setWeather(latitude, longitude, timezone, language, unit){
     try {
-        let weatherInfo = await getWeatherNextDays(latitude, longitude, language);
-        CURRENT_TEMP.textContent = `${Math.round(weatherInfo.current.temp)}°`;
+        let weatherInfo = await getWeather(latitude, longitude, language);
+        CURRENT_TEMP.textContent = `${Math.round(weatherInfo.current.temp)}`;
         CURRENT_WEATHER_ICON.src = `http://openweathermap.org/img/wn/${weatherInfo.current.weather[0].icon}@2x.png`;
         WEATHER_TODAY_PROP[0].textContent = weatherInfo.current.weather[0].description;
-        WEATHER_TODAY_PROP[1].textContent = `Feels like: ${Math.round(weatherInfo.current.feels_like)}°`;
-        WEATHER_TODAY_PROP[2].textContent = `Wind: ${Math.round(weatherInfo.current.wind_speed)} m/s`;
-        WEATHER_TODAY_PROP[3].textContent = `Humidity: ${Math.round(weatherInfo.current.humidity)}%`;
-        
-        if(language == 'ru') {
-            NEXT_DAY_NAME[0].textContent = DAYS_RU[new Date(weatherInfo.daily[1].dt* 1000).getDay()];
-            NEXT_DAY_NAME[1].textContent = DAYS_RU[new Date(weatherInfo.daily[2].dt* 1000).getDay()];
-            NEXT_DAY_NAME[2].textContent = DAYS_RU[new Date(weatherInfo.daily[3].dt* 1000).getDay()];
-         }else if(language == 'be') {
-            NEXT_DAY_NAME[0].textContent = DAYS_BE[new Date(weatherInfo.daily[1].dt* 1000).getDay()];
-            NEXT_DAY_NAME[1].textContent = DAYS_BE[new Date(weatherInfo.daily[2].dt* 1000).getDay()];
-            NEXT_DAY_NAME[2].textContentt = DAYS_BE[new Date(weatherInfo.daily[3].dt* 1000).getDay()];
+
+        if (language == 'en') {
+            fillWeatherInfo(language, weatherInfo);
+        } else if(language == 'ru') {
+            fillWeatherInfo(language, weatherInfo);
         } else {
-            NEXT_DAY_NAME[0].textContent = DAYS_EN[new Date(weatherInfo.daily[1].dt* 1000).getDay()];
-            NEXT_DAY_NAME[1].textContent = DAYS_EN[new Date(weatherInfo.daily[2].dt* 1000).getDay()];
-            NEXT_DAY_NAME[2].textContent = DAYS_EN[new Date(weatherInfo.daily[3].dt* 1000).getDay()];
+            fillWeatherInfo(language, weatherInfo);
         }
 
-        NEXT_DAY_TEMPS[0].textContent = `${Math.round(weatherInfo.daily[1].temp.eve)}°`
-        NEXT_DAY_TEMPS[1].textContent = `${Math.round(weatherInfo.daily[2].temp.eve)}°`
-        NEXT_DAY_TEMPS[2].textContent = `${Math.round(weatherInfo.daily[3].temp.eve)}°`
+        NEXT_DAY_NAME.forEach((element, i) => {
+            if(language == 'ru'){
+                element.textContent = DAYS_RU[new Date(weatherInfo.daily[i+1].dt * 1000).getDay()];
+            } else if(language == 'be') {
+                element.textContent = DAYS_BE[new Date(weatherInfo.daily[i+1].dt * 1000).getDay()];
+            } else {
+                element.textContent = DAYS_EN[new Date(weatherInfo.daily[i+1].dt * 1000).getDay()];
+            }
+        });
 
-        NEXT_DAY_ICONS[0].src = `http://openweathermap.org/img/wn/${weatherInfo.daily[1].weather[0].icon}@2x.png`
-        NEXT_DAY_ICONS[1].src = `http://openweathermap.org/img/wn/${weatherInfo.daily[2].weather[0].icon}@2x.png`
-        NEXT_DAY_ICONS[2].src = `http://openweathermap.org/img/wn/${weatherInfo.daily[3].weather[0].icon}@2x.png`
+        NEXT_DAY_TEMPS.forEach((element, i) => {
+            element.textContent = Math.round(weatherInfo.daily[i+1].temp.eve);
+        });
 
-        setImage(weatherInfo.current.weather[0].main);
-        weatherDescription = weatherInfo.current.weather[0].main;
+        NEXT_DAY_ICONS.forEach((element, i) => {
+            element.src = `http://openweathermap.org/img/wn/${weatherInfo.daily[i+1].weather[0].icon}@2x.png`;
+        });
+
+        cityName = INPUT_SEARCH.value;
+
+        if(unit == 'imperial'){
+            changeUnitTemp('metric');
+        }
+
+        let moment = require('moment-timezone');
+        moment.locale(language);
+        let  hourAtNow = +moment().tz(timezone).format('HH');
+        let  mounthAtNow = +moment().tz(timezone).format('MM');
+
+        currentSeason = toDetermineSeason(mounthAtNow);
+        timesOfDay = toDetermineDayPeriod(hourAtNow);
+
+        setImage(cityName, currentSeason, timesOfDay);
+        
     } catch(error) {
         console.log(error);
     }
 }
+
+

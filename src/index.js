@@ -1,16 +1,22 @@
 import { setImage } from './background';
 import { success, error, options } from './geolocation';
-import { BACKGROUND_SWITCH_BUTTON, SEARCH_BUTTON, LANG_BUTTON, BUTTON_TO_FARENGATE, BUTTON_TO_CELSIUS, INPUT_SEARCH } from './constants';
-import { weatherDescription } from './weather';
+import { BACKGROUND_SWITCH_BUTTON, SEARCH_BUTTON, LANG_BUTTON, BUTTON_TO_FARENGATE, BUTTON_TO_CELSIUS, INPUT_SEARCH} from './constants';
+import { cityName, currentSeason, timesOfDay } from './weather';
 import { setCoordinatesByCityName } from './geocodingApi';
 import { timerId } from './filling';
+import { changeActiveUnit } from './temperatureConverter';
 
-export let language = localStorage.getItem('Lang')? localStorage.getItem('Lang'): "ru" ;
-export let units = localStorage.getItem('Units')? localStorage.getItem('Units'): "metric" ;
+export let language = localStorage.getItem('Lang')? localStorage.getItem('Lang'): "en" ;
+export let unit = localStorage.getItem('Unit')? localStorage.getItem('Unit'): "metric" ;
 LANG_BUTTON.value = language;
 
+if(unit != 'metric'){
+    BUTTON_TO_FARENGATE.classList.toggle('active');
+    BUTTON_TO_CELSIUS.classList.toggle('active');
+}
+
 BACKGROUND_SWITCH_BUTTON.addEventListener('click', () => {
-    setImage(weatherDescription);
+    setImage(cityName, currentSeason, timesOfDay);
 });
 
 SEARCH_BUTTON.addEventListener('click', (event) => {
@@ -18,6 +24,9 @@ SEARCH_BUTTON.addEventListener('click', (event) => {
     let cityName = INPUT_SEARCH.value;
     clearInterval(timerId);
     setCoordinatesByCityName(cityName, language);
+    if(unit == 'imperial'){
+        unit = changeActiveUnit(unit);
+    }
 });
 
 LANG_BUTTON.addEventListener('click', () =>{
@@ -25,30 +34,31 @@ LANG_BUTTON.addEventListener('click', () =>{
     let value= LANG_BUTTON.options[selected].value;
     if (value == language) return;
     language = value;
+    let cityName = INPUT_SEARCH.value;
+    console.log(cityName);
+    if(cityName == ''){
+        navigator.geolocation.getCurrentPosition(success, error, options);
+    }else{
+        setCoordinatesByCityName(cityName, language);
+    }
+    if(unit == 'imperial'){
+        unit = changeActiveUnit(unit);
+    }
     localStorage.setItem('Lang', language);
 });
 
 BUTTON_TO_FARENGATE.addEventListener('click', () =>{
-    BUTTON_TO_FARENGATE.classList.add('active');
-    BUTTON_TO_CELSIUS.classList.remove('active');
-    units = "imperial";
-    localStorage.setItem('Units', units);
-})
+    if(unit == 'metric') {
+        unit = changeActiveUnit(unit);
+    }
+});
 
 BUTTON_TO_CELSIUS.addEventListener('click', () =>{
-    BUTTON_TO_FARENGATE.classList.remove('active');
-    BUTTON_TO_CELSIUS.classList.add('active');
-    units = "metric";
-    localStorage.setItem('Units', units);
-})
-
-async function startApp(){
-    setImage();
-    navigator.geolocation.getCurrentPosition(success, error, options);
-    if(units != 'metric'){
-        BUTTON_TO_FARENGATE.classList.toggle('active');
-        BUTTON_TO_CELSIUS.classList.toggle('active');
+    if(unit == 'imperial') {
+        unit = changeActiveUnit(unit);
     }
-}
+});
 
-startApp();
+window.onload = function() {
+    navigator.geolocation.getCurrentPosition(success, error, options);
+};
