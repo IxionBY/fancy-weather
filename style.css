@@ -180,8 +180,21 @@ html{
     border-radius: 5px;
 }
 
+.controls_block--btn_icon:hover{
+    -webkit-animation:spin 5s linear;
+    -moz-animation:spin 5s linear;
+    animation:spin 5s linear;
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(1080deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(1080deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(1080deg); transform:rotate(1080deg); } }
+
 .controls_block--btn_icon{
-    padding-top: 3px;
+    padding: 5px;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
 }
 
 .button-background:hover{
@@ -421,6 +434,15 @@ html{
     padding: 15px 0 15px 0px;
 }
 
+.none{
+    visibility: hidden;
+}
+
+.preloader{
+    position: absolute;
+    top: 25%;
+    left: 36%;
+}
 
 @media (max-width: 1039px){
     .control__search-wrapper {
@@ -433,6 +455,12 @@ html{
 
     .map {
         height: 400px;
+    }
+
+    .preloader {
+        position: absolute;
+        top: 20%;
+        left: 32%;
     }
 }
 
@@ -455,5 +483,12 @@ html{
 
     .map {
         height: 400px;
+    }
+
+    .preloader{
+        width: 50%;
+        position: absolute;
+        top: 25%;
+        left: 27%;
     }
 }

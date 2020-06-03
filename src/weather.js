@@ -1,4 +1,4 @@
-import { WEATHER_TODAY_PROP, CURRENT_TEMP, CURRENT_WEATHER_ICON, NEXT_DAY_TEMPS, NEXT_DAY_NAME, DAYS_RU, DAYS_EN, DAYS_BE, NEXT_DAY_ICONS, INPUT_SEARCH} from './constants';
+import { WEATHER_TODAY_PROP, CURRENT_TEMP, CURRENT_WEATHER_ICON, NEXT_DAY_TEMPS, NEXT_DAY_NAME, DAYS_RU, DAYS_EN, DAYS_BE, NEXT_DAY_ICONS, INPUT_SEARCH, MAP_BLOCK, WEATHER_BLOCK, PRELOADER} from './constants';
 import { setImage } from './background';
 import { changeUnitTemp } from './temperatureConverter'
 import { toDetermineDayPeriod, toDetermineSeason } from './optionalFunctions'
@@ -63,6 +63,9 @@ export async function setWeather(latitude, longitude, timezone, language, unit){
         timesOfDay = toDetermineDayPeriod(hourAtNow);
 
         setImage(cityName, currentSeason, timesOfDay);
+        MAP_BLOCK.classList.toggle('none');
+        WEATHER_BLOCK.classList.toggle('none');
+        PRELOADER.classList.toggle('none');
         
     } catch(error) {
         console.log(error);

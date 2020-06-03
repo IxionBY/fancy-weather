@@ -1,6 +1,6 @@
 import { getMap} from './map';
 import { setWeather} from './weather';
-import { INPUT_SEARCH, API_MESSAGE } from './constants';
+import { INPUT_SEARCH, API_MESSAGE, MAP_BLOCK, WEATHER_BLOCK, PRELOADER } from './constants';
 import { fillingGeoInfo } from './filling';
 
 export function getCityNameByCoordinates(latitude, longitude, language) {
@@ -41,6 +41,9 @@ export async function setCoordinatesByCityName(cityName, language){
         INPUT_SEARCH.value ='';
         INPUT_SEARCH.placeholder = API_MESSAGE[language];
         INPUT_SEARCH.classList.add('red');
+        MAP_BLOCK.classList.toggle('none');
+        WEATHER_BLOCK.classList.toggle('none');
+        PRELOADER.classList.toggle('none');
     }
 }
 

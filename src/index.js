@@ -1,6 +1,6 @@
 import { setImage } from './background';
 import { success, error, options } from './geolocation';
-import { BACKGROUND_SWITCH_BUTTON, SEARCH_BUTTON, LANG_BUTTON, BUTTON_TO_FARENGATE, BUTTON_TO_CELSIUS, INPUT_SEARCH} from './constants';
+import { BACKGROUND_SWITCH_BUTTON, SEARCH_BUTTON, LANG_BUTTON, BUTTON_TO_FARENGATE, BUTTON_TO_CELSIUS, INPUT_SEARCH, MAP_BLOCK, WEATHER_BLOCK, PRELOADER} from './constants';
 import { cityName, currentSeason, timesOfDay } from './weather';
 import { setCoordinatesByCityName } from './geocodingApi';
 import { timerId } from './filling';
@@ -21,6 +21,9 @@ BACKGROUND_SWITCH_BUTTON.addEventListener('click', () => {
 
 SEARCH_BUTTON.addEventListener('click', (event) => {
     event.preventDefault();
+    MAP_BLOCK.classList.toggle('none');
+    WEATHER_BLOCK.classList.toggle('none');
+    PRELOADER.classList.toggle('none');
     let cityName = INPUT_SEARCH.value;
     clearInterval(timerId);
     setCoordinatesByCityName(cityName, language);
@@ -30,12 +33,16 @@ SEARCH_BUTTON.addEventListener('click', (event) => {
 });
 
 LANG_BUTTON.addEventListener('click', () =>{
+    
     let selected = LANG_BUTTON.options.selectedIndex;
     let value= LANG_BUTTON.options[selected].value;
     if (value == language) return;
     language = value;
     let cityName = INPUT_SEARCH.value;
     console.log(cityName);
+    MAP_BLOCK.classList.toggle('none');
+    WEATHER_BLOCK.classList.toggle('none');
+    PRELOADER.classList.toggle('none');
     if(cityName == ''){
         navigator.geolocation.getCurrentPosition(success, error, options);
     }else{

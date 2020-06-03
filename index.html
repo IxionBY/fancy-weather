@@ -10,10 +10,11 @@
 </head>
 <body>
     <section class="app_wrapper">
+        <img src="./assets/img/preloader.svg" alt="preloader" class="preloader">
         <section class="control">
             <section class="control__buttons-wrapper"> 
                 <div class="btn_base button-background">
-                    <img src="assets/img/icons8-refresh.svg" class="controls_block--btn_icon" alt="refresh">
+                    <img src="assets/img/refresh.svg" class="controls_block--btn_icon" alt="refresh">
                 </div>
                 <div class="button-languages">
                     <select class="list-languages">
@@ -39,7 +40,7 @@
                 </form>
             </section>
         </section>
-        <section class="weather">
+        <section class="weather none">
             <section class="weather__today">
                 <div class="text_base weather__today--city-country"></div>
                 <div class="text_base weather__today--date-time"></div>
@@ -72,7 +73,7 @@
                 </div>
             </section>
         </section>
-        <section class="map_block">
+        <section class="map_block none">
             <div id="map" class="map"></div>
             <div class="text_base map_block--text latitude"></div>
             <div class="text_base map_block--text longitude"></div>
