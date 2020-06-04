@@ -110,7 +110,7 @@ recognizer.onresult = function (event) {
             let cityName = INPUT_SEARCH.value;
             setCoordinatesByCityName(cityName, language);
             if(unit == "imperial"){
-                unit = ChangeActiveUnit(unit);
+                unit = changeActiveUnit(unit);
             }
             BUTTON_VOICE.classList.toggle('active-voice');
         }
