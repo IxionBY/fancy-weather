@@ -83,6 +83,7 @@ BUTTON_VOICE.addEventListener('click', () =>{
     recognizer.lang = language;
     recognizer.start();
     BUTTON_VOICE.classList.toggle('active-voice');
+    clearInterval(timerId);
 });
 
 
