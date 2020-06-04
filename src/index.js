@@ -33,7 +33,6 @@ SEARCH_BUTTON.addEventListener('click', (event) => {
     WEATHER_BLOCK.classList.toggle('none');
     PRELOADER.classList.toggle('none');
     let cityName = INPUT_SEARCH.value;
-    clearInterval(timerId);
     setCoordinatesByCityName(cityName, language);
     if(unit == 'imperial'){
         unit = changeActiveUnit(unit);
@@ -109,7 +108,6 @@ recognizer.onresult = function (event) {
             WEATHER_BLOCK.classList.toggle('none');
             PRELOADER.classList.toggle('none');
             let cityName = INPUT_SEARCH.value;
-            clearInterval(timerId);
             setCoordinatesByCityName(cityName, language);
             if(unit == "imperial"){
                 unit = ChangeActiveUnit(unit);
