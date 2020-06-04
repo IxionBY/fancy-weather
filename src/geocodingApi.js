@@ -1,7 +1,7 @@
 import { getMap} from './map';
 import { setWeather} from './weather';
 import { INPUT_SEARCH, API_MESSAGE, MAP_BLOCK, WEATHER_BLOCK, PRELOADER } from './constants';
-import { fillingGeoInfo } from './filling';
+import { fillingGeoInfo, timerId } from './filling';
 
 export function getCityNameByCoordinates(latitude, longitude, language) {
     const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}%2C${longitude}&pretty=1&language=${language}&key=ab4a850827f44a8ba9984431d32f665f`;
@@ -35,8 +35,9 @@ export async function setCoordinatesByCityName(cityName, language){
             }
         }
         getMap(cityNameInfo.results[0].geometry.lat, cityNameInfo.results[0].geometry.lng);
-        setWeather(cityNameInfo.results[0].geometry.lat, cityNameInfo.results[0].geometry.lng, timezone, language);
+        clearInterval(timerId);
         fillingGeoInfo(country, city, lat, lng,  timezone, language);
+        setWeather(cityNameInfo.results[0].geometry.lat, cityNameInfo.results[0].geometry.lng, timezone, language);
     } catch(error) {
         INPUT_SEARCH.value ='';
         INPUT_SEARCH.placeholder = API_MESSAGE[language];
@@ -44,6 +45,7 @@ export async function setCoordinatesByCityName(cityName, language){
         MAP_BLOCK.classList.toggle('none');
         WEATHER_BLOCK.classList.toggle('none');
         PRELOADER.classList.toggle('none');
+        console.log(error);
     }
 }
 
