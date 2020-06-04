@@ -72,5 +72,3 @@ export async function setWeather(latitude, longitude, timezone, language, unit){
         console.log(error);
     }
 }
-
-
