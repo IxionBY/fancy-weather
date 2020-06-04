@@ -13,6 +13,7 @@ function getWeather(latitude, longitude, language) {
 export let cityName = '';
 export let currentSeason;
 export let timesOfDay;
+export let weatherMessage = '';
 
 
 export async function setWeather(latitude, longitude, timezone, language, unit){
@@ -21,7 +22,7 @@ export async function setWeather(latitude, longitude, timezone, language, unit){
         CURRENT_TEMP.textContent = `${Math.round(weatherInfo.current.temp)}`;
         CURRENT_WEATHER_ICON.src = `http://openweathermap.org/img/wn/${weatherInfo.current.weather[0].icon}@2x.png`;
         WEATHER_TODAY_PROP[0].textContent = weatherInfo.current.weather[0].description;
-
+        weatherMessage = `${CURRENT_TEMP.textContent} ${WEATHER_TODAY_PROP[0].textContent}`;
         if (language == 'en') {
             fillWeatherInfo(language, weatherInfo);
         } else if(language == 'ru') {

@@ -156,6 +156,16 @@ html{
     filter: invert(30%) sepia(99%) saturate(4077%) hue-rotate(105deg);
 }
 
+.active-voice{
+    -webkit-box-shadow: 0px 0px 75px 36px rgba(0,193,95,1);
+    -moz-box-shadow: 0px 0px 75px 36px rgba(0,193,95,1);
+    box-shadow: 0px 0px 75px 36px rgba(0,193,95,1);
+}
+
+.active-voice>.button-voice-img{
+    filter: invert(30%) sepia(99%) saturate(4077%) hue-rotate(105deg);
+}
+
 .button-voice img {
     padding-top: 6px;
 }
@@ -173,11 +183,16 @@ html{
     background: #009933;
 }
 
-.button-background {
+.button-background,
+.button-play {
     line-height: 54px;
     background-color: #808080;
     border: 1px solid #FFFFFF;
     border-radius: 5px;
+}
+
+.button-play{
+    margin: 0 20px;
 }
 
 .controls_block--btn_icon:hover{
@@ -190,14 +205,16 @@ html{
 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(1080deg); } }
 @keyframes spin { 100% { -webkit-transform: rotate(1080deg); transform:rotate(1080deg); } }
 
-.controls_block--btn_icon{
+.controls_block--btn_icon,
+.controls_block--btn_icon-play{
     padding: 5px;
     background-size: cover;
     width: 100%;
     height: 100%;
 }
 
-.button-background:hover{
+.button-background:hover,
+.button-play:hover{
     background-color: #009933;
 }
 
@@ -354,8 +371,6 @@ html{
     font-size: 1em;
 }
 
-
-
 .weather__days {
     display: flex;
     justify-content: space-around;
@@ -387,7 +402,6 @@ html{
     padding: 15px 0 0 15px;
     font-size: 2em;
 }
-
 
 .day_block--sign {
     width: 40%;
@@ -464,6 +478,17 @@ html{
     }
 }
 
+@media (max-width: 810px){
+
+    .control__buttons-wrapper {
+        justify-content: space-evenly;
+    }
+
+    .control__search-wrapper {
+        width: 100%;
+    }
+}
+
 @media (max-width: 635px){
     html {
         font-size: 10px;
@@ -491,4 +516,41 @@ html{
         top: 25%;
         left: 27%;
     }
+
+    .list-languages {
+        width: 60px;
+        height: 28px;
+    }
+
+    .button-temp-view {
+        height: 28px;
+    }
+
+    .btn_base {
+        width: 28px;
+        height: 26px;
+        line-height: 30px;
+    }
+
+    .input-search {
+        height: 28px;
+    }
+
+    .button-voice {
+        width: 28px;
+        height: 28px;   
+    }
+
+    .button-voice img {
+        padding-bottom: 4px;
+        padding-top: 0;
+        width: 60%;
+    }
+
+    .button-search {
+        width: 87px;
+        height: 28px; 
+        line-height: 27px;
+    }
+
 }
